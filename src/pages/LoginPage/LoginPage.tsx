@@ -37,10 +37,9 @@ function LoginPage() {
     // @ts-ignore
     const classes = useStyles();
     const validationSchema = yup.object({
-        email: yup
+        login: yup
             .string()
-            .email('Enter a valid email')
-            .required('Email is required'),
+            .required('Login is required'),
         password: yup
             .string()
             .min(8, 'Password should be of minimum 8 characters length')
@@ -49,7 +48,7 @@ function LoginPage() {
 
     const formik = useFormik({
         initialValues: {
-            email: '',
+            login: '',
             password: '',
         },
         validationSchema: validationSchema,
@@ -75,15 +74,15 @@ function LoginPage() {
                         margin="normal"
                         required
                         fullWidth
-                        id="email"
-                        label="Email Address"
-                        name="email"
-                        autoComplete="email"
+                        id="login"
+                        label="Login"
+                        name="login"
+                        autoComplete="login"
                         autoFocus
                         onChange={formik.handleChange}
-                        value={formik.values.email}
-                        error={formik.touched.email && Boolean(formik.errors.email)}
-                        helperText={formik.touched.email && formik.errors.email}
+                        value={formik.values.login}
+                        error={formik.touched.login && Boolean(formik.errors.login)}
+                        helperText={formik.touched.login && formik.errors.login}
                     />
                     <TextField
                         variant="outlined"
