@@ -1,19 +1,18 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import {
     Avatar,
     Button,
-    Checkbox,
     Container,
-    FormControlLabel,
-    Grid,
-    Link,
     TextField,
     Typography
 } from '@mui/material';
 import { makeStyles } from '@mui/styles'
 import { LockOutlined } from '@mui/icons-material';
+import {IUser} from "../../store/reducers/users";
+import { useHistory } from 'react-router-dom';
+import { LoginPageProps } from '.';
 
 const useStyles = makeStyles((theme) => ({
     container: {
@@ -33,16 +32,32 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-function LoginPage() {
-    // @ts-ignore
+const LoginPage = (props: LoginPageProps) => {
+    const {
+        login, users, authed
+    } = props
+
     const classes = useStyles();
+    const history = useHistory()
+
+    const onSubmitHandler = (values: IUser) => {
+        const user = users.find(user => user.login === values.login)
+        console.log('user', user)
+        console.log('values', values)
+        console.log(authed)
+        if (user && user?.password === values.password) {
+            login(user)
+            history.push('/profile')
+        }
+    }
+
     const validationSchema = yup.object({
         login: yup
             .string()
             .required('Login is required'),
         password: yup
             .string()
-            .min(8, 'Password should be of minimum 8 characters length')
+            .min(4, 'Password should be of minimum 8 characters length')
             .required('Password is required'),
     });
 
@@ -52,9 +67,7 @@ function LoginPage() {
             password: '',
         },
         validationSchema: validationSchema,
-        onSubmit: (values) => {
-            alert(JSON.stringify(values, null, 2));
-        },
+        onSubmit: (values) => onSubmitHandler(values)
     });
 
     return (
@@ -98,10 +111,6 @@ function LoginPage() {
                         value={formik.values.password}
                         error={formik.touched.password && Boolean(formik.errors.password)}
                         helperText={formik.touched.password && formik.errors.password}
-                    />
-                    <FormControlLabel
-                        control={<Checkbox value="remember" color="primary" />}
-                        label="Remember me"
                     />
                     <Button
                         type="submit"

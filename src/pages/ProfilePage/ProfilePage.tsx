@@ -1,8 +1,7 @@
 import React from 'react';
-import { useFormik } from 'formik';
-import * as yup from 'yup';
 import { makeStyles } from '@mui/styles'
 import {Button, Container, Typography} from '@mui/material';
+import {ProfilePageProps} from "./index";
 
 const useStyles = makeStyles((theme) => ({
     container: {
@@ -19,41 +18,21 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-function ProfilePage() {
-    // @ts-ignore
+const ProfilePage = (props: ProfilePageProps) => {
+    const {user, logout} = props
     const classes = useStyles();
-    const validationSchema = yup.object({
-        email: yup
-            .string()
-            .email('Enter a valid email')
-            .required('Email is required'),
-        password: yup
-            .string()
-            .min(8, 'Password should be of minimum 8 characters length')
-            .required('Password is required'),
-    });
-
-    const formik = useFormik({
-        initialValues: {
-            email: '',
-            password: '',
-        },
-        validationSchema: validationSchema,
-        onSubmit: (values) => {
-            alert(JSON.stringify(values, null, 2));
-        },
-    });
 
     return (
         <Container component="main" maxWidth="xs" className={classes.container}>
             <div className={classes.paper}>
-              <Typography>
-                  Hello, user
+              <Typography variant="h5" component="h1">
+                  Hello, {user?.login}
               </Typography>
                 <Button
                     fullWidth
                     variant="contained"
                     color="primary"
+                    onClick={() => logout()}
                 >
                     Sign Out
                 </Button>
