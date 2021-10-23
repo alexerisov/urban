@@ -2,7 +2,7 @@
 
 ```bash
 git clone https://github.com/alexerisov/urban
-cd urbam
+cd urban
 npm run start
 ```
 
